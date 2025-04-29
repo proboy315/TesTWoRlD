@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Multi-User Login Portal</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Account Signup | ProBoy Services</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600;700&display=swap');
@@ -16,313 +16,235 @@
     }
 
     body {
-      height: 100vh;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-      overflow: hidden;
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       position: relative;
+      overflow: hidden;
     }
 
-    /* Advanced Particle Background */
+    /* Particle Background */
     #particles-js {
-      position: absolute;
+      position: fixed;
       width: 100%;
       height: 100%;
       top: 0;
       left: 0;
       z-index: 0;
-      background: transparent;
     }
 
-    /* Login Container */
-    .login-container {
+    /* Signup Container */
+    .signup-container {
       position: relative;
       z-index: 1;
       background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
+      backdrop-filter: blur(15px);
       border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 25px;
-      padding: 50px 40px;
-      width: 380px;
-      text-align: center;
-      box-shadow: 0 15px 50px rgba(0,0,0,0.3);
-      transform-style: preserve-3d;
-      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    .login-container:hover {
-      transform: rotateY(5deg) scale(1.02);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-    }
-
-    .login-container h2 {
-      color: #fff;
-      margin-bottom: 30px;
-      font-size: 32px;
-      font-weight: 700;
-      text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
-    }
-
-    .input-group {
-      position: relative;
-      margin-bottom: 20px;
-    }
-
-    .input-group i {
-      position: absolute;
-      left: 15px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: rgba(255,255,255,0.7);
-      font-size: 18px;
-    }
-
-    input {
-      width: 100%;
-      padding: 15px 15px 15px 45px;
-      margin: 5px 0;
-      border: none;
-      border-radius: 12px;
-      background: rgba(255,255,255,0.12);
-      color: #fff;
-      font-size: 16px;
-      outline: none;
-      transition: all 0.3s ease;
-      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-    }
-
-    input::placeholder {
-      color: rgba(255,255,255,0.6);
-    }
-
-    input:focus {
-      background: rgba(255,255,255,0.2);
-      box-shadow: 0 8px 30px rgba(255, 255, 255, 0.2);
-    }
-
-    .btn {
-      width: 100%;
-      padding: 16px;
-      margin-top: 20px;
-      border: none;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: #fff;
-      font-size: 18px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.4s ease;
-      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .btn:hover {
-      transform: translateY(-3px);
-      background: linear-gradient(135deg, #764ba2, #667eea);
-      box-shadow: 0 15px 35px rgba(118, 75, 162, 0.5);
-    }
-
-    .btn:active {
-      transform: translateY(0);
-    }
-
-    .btn::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, rgba(255,255,255,0.3), transparent);
-      transform: translateX(-100%);
-      transition: transform 0.6s ease;
-    }
-
-    .btn:hover::after {
-      transform: translateX(100%);
-    }
-
-    .popup {
-      margin-top: 20px;
-      padding: 15px;
-      border-radius: 12px;
-      font-weight: 600;
-      display: none;
-      animation: fadeIn 0.5s ease;
+      border-radius: 20px;
+      padding: 40px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+      animation: fadeIn 0.8s ease;
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
+      from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .popup.success {
-      background-color: rgba(46, 213, 115, 0.2);
-      color: #2ed573;
-      border: 1px solid rgba(46, 213, 115, 0.3);
-      display: block;
+    .signup-header {
+      text-align: center;
+      margin-bottom: 30px;
     }
 
-    .popup.error {
-      background-color: rgba(255, 71, 87, 0.2);
-      color: #ff4757;
-      border: 1px solid rgba(255, 71, 87, 0.3);
-      display: block;
+    .signup-header i {
+      font-size: 50px;
+      color: #667eea;
+      margin-bottom: 15px;
     }
 
-    /* Loading Animation */
-    .loading {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 100vh;
-      width: 100%;
-      background: rgba(0, 0, 0, 0.9);
-      z-index: 1000;
-      display: none;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
+    .signup-header h2 {
+      font-size: 28px;
+      color: #667eea;
+      margin-bottom: 10px;
+      text-shadow: 0 0 15px rgba(102, 126, 234, 0.5);
     }
 
-    .loading-spinner {
-      width: 80px;
-      height: 80px;
-      border: 8px solid rgba(255,255,255,0.1);
-      border-top-color: #667eea;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
+    /* Form Styles */
+    .signup-form {
+      margin-top: 20px;
+    }
+
+    .input-group {
       margin-bottom: 20px;
     }
 
-    .loading-text {
-      color: #fff;
-      font-size: 18px;
-      margin-top: 15px;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    .forgot-password {
+    .input-group label {
       display: block;
-      margin-top: 15px;
-      color: rgba(255,255,255,0.7);
-      text-decoration: none;
-      font-size: 14px;
-      transition: color 0.3s ease;
+      margin-bottom: 8px;
+      color: rgba(255,255,255,0.8);
     }
 
-    .forgot-password:hover {
-      color: #fff;
-      text-decoration: underline;
+    .input-group input {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.12);
+      color: white;
+      font-size: 16px;
+      outline: none;
+    }
+
+    .input-group input:focus {
+      background: rgba(255,255,255,0.2);
+      box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.5);
+    }
+
+    .input-group input::placeholder {
+      color: rgba(255,255,255,0.6);
+    }
+
+    .signup-btn {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+    }
+
+    .signup-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px rgba(118, 75, 162, 0.5);
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 20px;
+      color: rgba(255,255,255,0.7);
+    }
+
+    .login-link a {
+      color: #667eea;
+      text-decoration: none;
+    }
+
+    /* Footer */
+    footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      padding: 15px 0;
+      text-align: center;
+      font-size: 14px;
+      z-index: 10;
     }
   </style>
 </head>
 <body>
-
-  <!-- Advanced Particle Background -->
+  <!-- Particle Background -->
   <div id="particles-js"></div>
 
-  <div class="loading" id="loading">
-    <div class="loading-spinner"></div>
-    <div class="loading-text">Authenticating...</div>
-  </div>
+  <div class="signup-container">
+    <div class="signup-header">
+      <i class="fas fa-user-plus"></i>
+      <h2>Create Your Account</h2>
+      <p>Join our premium services today</p>
+    </div>
 
-  <div class="login-container">
-    <h2><i class="fas fa-lock"></i> Secure Login</h2>
-    <form id="loginForm">
+    <form class="signup-form" id="signupForm">
       <div class="input-group">
-        <i class="fas fa-user"></i>
-        <input type="text" id="username" placeholder="Username" required />
+        <label for="fullname">Full Name</label>
+        <input type="text" id="fullname" placeholder="Enter your full name" required>
       </div>
+
       <div class="input-group">
-        <i class="fas fa-key"></i>
-        <input type="password" id="password" placeholder="Password" required />
+        <label for="email">Email Address</label>
+        <input type="email" id="email" placeholder="example@domain.com" required>
       </div>
-      <button type="submit" class="btn">
-        <i class="fas fa-sign-in-alt"></i> Login
+
+      <div class="input-group">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" placeholder="Enter your phone number" required>
+      </div>
+
+      <div class="input-group">
+        <label for="username">Choose Username</label>
+        <input type="text" id="username" placeholder="Create a username" required>
+      </div>
+
+      <div class="input-group">
+        <label for="password">Create Password</label>
+        <input type="password" id="password" placeholder="Enter a strong password" required>
+      </div>
+
+      <button type="submit" class="signup-btn">
+        <i class="fas fa-user-check"></i> Sign Up
       </button>
-      <a href="#" class="forgot-password">Forgot password?</a>
+
+      <div class="login-link">
+        Already have an account? <a href="#">Log in</a>
+      </div>
     </form>
-    <div id="popup" class="popup"></div>
   </div>
 
-  <!-- CryptoJS for AES Encryption -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-  <!-- Particles.js for advanced background -->
-  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <footer>
+    <p>мα∂є ву <b>ProBoy</b> &copy; <span id="currentYear"></span> | All rights reserved</p>
+  </footer>
 
+  <!-- Particles.js for background -->
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  
   <script>
     // Initialize particle background
     particlesJS("particles-js", {
       "particles": {
         "number": {
-          "value": 80,
+          "value": 60,
           "density": {
             "enable": true,
             "value_area": 800
           }
         },
         "color": {
-          "value": ["#667eea", "#764ba2", "#6B46C1", "#9F7AEA"]
+          "value": ["#667eea", "#764ba2", "#6B46C1"]
         },
         "shape": {
-          "type": "circle",
-          "stroke": {
-            "width": 0,
-            "color": "#000000"
-          },
-          "polygon": {
-            "nb_sides": 5
-          }
+          "type": "circle"
         },
         "opacity": {
-          "value": 0.6,
-          "random": true,
-          "anim": {
-            "enable": true,
-            "speed": 1,
-            "opacity_min": 0.1,
-            "sync": false
-          }
+          "value": 0.5,
+          "random": true
         },
         "size": {
-          "value": 5,
-          "random": true,
-          "anim": {
-            "enable": true,
-            "speed": 2,
-            "size_min": 0.1,
-            "sync": false
-          }
+          "value": 3,
+          "random": true
         },
         "line_linked": {
           "enable": true,
           "distance": 150,
           "color": "#667eea",
-          "opacity": 0.4,
+          "opacity": 0.3,
           "width": 1
         },
         "move": {
           "enable": true,
-          "speed": 2,
+          "speed": 1.5,
           "direction": "none",
           "random": true,
-          "straight": false,
-          "out_mode": "out",
-          "bounce": false,
-          "attract": {
-            "enable": true,
-            "rotateX": 600,
-            "rotateY": 1200
-          }
+          "out_mode": "out"
         }
       },
       "interactivity": {
@@ -335,104 +257,37 @@
           "onclick": {
             "enable": true,
             "mode": "push"
-          },
-          "resize": true
-        },
-        "modes": {
-          "grab": {
-            "distance": 140,
-            "line_linked": {
-              "opacity": 1
-            }
-          },
-          "bubble": {
-            "distance": 400,
-            "size": 40,
-            "duration": 2,
-            "opacity": 8,
-            "speed": 3
-          },
-          "repulse": {
-            "distance": 200,
-            "duration": 0.4
-          },
-          "push": {
-            "particles_nb": 4
-          },
-          "remove": {
-            "particles_nb": 2
           }
         }
       },
       "retina_detect": true
     });
 
-    const form = document.getElementById('loginForm');
-    const popup = document.getElementById('popup');
-    const loading = document.getElementById('loading');
+    // Set current year
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
 
-    // Path to your auth.txt file in GitHub repo
-    const authFileURL = 'https://raw.githubusercontent.com/proboy315/TesTWoRlD/refs/heads/main/auth.txt';
-
-    form.addEventListener('submit', async function(event) {
-      event.preventDefault();
-      const username = document.getElementById('username').value.trim();
-      const password = document.getElementById('password').value.trim();
-
-      // Show Loading Animation
-      loading.style.display = 'flex';
-
-      try {
-        // Fetch the auth.txt file from GitHub
-        const response = await fetch(authFileURL);
-        if (!response.ok) throw new Error('Failed to fetch credentials');
-        
-        const authText = await response.text();
-        const credentials = authText.split('\n').map(line => line.trim()).filter(line => line);
-        
-        // Check if credentials exist in the file
-        const credentialToCheck = `${username}:${password}`;
-        const isValid = credentials.some(cred => cred === credentialToCheck);
-
-        if (isValid) {
-          popup.innerHTML = '<i class="fas fa-check-circle"></i> Login successful! Redirecting...';
-          popup.className = 'popup success';
-          
-          // Store session token
-          const sessionToken = CryptoJS.lib.WordArray.random(32).toString();
-          localStorage.setItem('authToken', sessionToken);
-          
-          setTimeout(() => {
-            window.location.href = 'dashboard.html'; // Redirect to dashboard
-          }, 2000);
-        } else {
-          throw new Error('Invalid credentials');
-        }
-      } catch (error) {
-        popup.innerHTML = '<i class="fas fa-exclamation-circle"></i> Invalid username or password';
-        popup.className = 'popup error';
-        
-        // Shake animation for wrong credentials
-        form.style.animation = 'shake 0.5s';
-        setTimeout(() => {
-          form.style.animation = '';
-        }, 500);
-      } finally {
-        loading.style.display = 'none';
-      }
+    // Form submission
+    document.getElementById('signupForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Get form values
+      const formData = {
+        fullname: document.getElementById('fullname').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        username: document.getElementById('username').value,
+        password: document.getElementById('password').value
+      };
+      
+      // Here you would typically send this to your server
+      console.log('Signup data:', formData);
+      
+      // Show success message (in a real app, you'd redirect or show proper feedback)
+      alert(`Thank you for signing up, ${formData.fullname}!\nWe've sent a verification link to ${formData.email}`);
+      
+      // Reset form
+      this.reset();
     });
-
-    // Add shake animation for wrong credentials
-    const style = document.createElement('style');
-    style.textContent = `
-      @keyframes shake {
-        0%, 100% { transform: translateX(0); }
-        20%, 60% { transform: translateX(-10px); }
-        40%, 80% { transform: translateX(10px); }
-      }
-    `;
-    document.head.appendChild(style);
   </script>
-
 </body>
 </html>
