@@ -1,298 +1,154 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Account Signup | ProBoy Services</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ProBoy Card</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600;700&display=swap');
-
     * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
     }
-
     body {
-      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-      color: white;
-      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #870000, #190A05);
+      color: #333;
       display: flex;
-      align-items: center;
       justify-content: center;
-      position: relative;
-      overflow: hidden;
+      align-items: center;
+      min-height: 100vh;
     }
-
-    /* Particle Background */
-    #particles-js {
-      position: fixed;
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    .card {
+      background: white;
+      width: 90%;
+      max-width: 900px;
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    }
+    .profile-img {
+      flex: 1;
+      background: #ccc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .profile-img img {
       width: 100%;
       height: 100%;
-      top: 0;
-      left: 0;
-      z-index: 0;
+      object-fit: cover;
     }
-
-    /* Signup Container */
-    .signup-container {
+    .info {
+      flex: 2;
+      padding: 30px;
+      background: #fff;
       position: relative;
-      z-index: 1;
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(15px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 20px;
-      padding: 40px;
-      width: 90%;
-      max-width: 500px;
-      box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-      animation: fadeIn 0.8s ease;
     }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .signup-header {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-
-    .signup-header i {
-      font-size: 50px;
-      color: #667eea;
-      margin-bottom: 15px;
-    }
-
-    .signup-header h2 {
-      font-size: 28px;
-      color: #667eea;
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       margin-bottom: 10px;
-      text-shadow: 0 0 15px rgba(102, 126, 234, 0.5);
     }
-
-    /* Form Styles */
-    .signup-form {
-      margin-top: 20px;
+    .logo div {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
-
-    .input-group {
+    .logo-placeholder {
+      width: 40px;
+      height: 40px;
+      background: url('https://via.placeholder.com/40') no-repeat center/cover;
+      border-radius: 50%;
+    }
+    .title {
+      color: #870000;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .tagline {
+      font-size: 14px;
+      color: #555;
       margin-bottom: 20px;
     }
-
-    .input-group label {
-      display: block;
-      margin-bottom: 8px;
-      color: rgba(255,255,255,0.8);
+    .name {
+      font-size: 32px;
+      font-weight: bold;
+      color: #000;
     }
-
-    .input-group input {
-      width: 100%;
-      padding: 15px;
-      border: none;
-      border-radius: 10px;
-      background: rgba(255,255,255,0.12);
-      color: white;
-      font-size: 16px;
-      outline: none;
-    }
-
-    .input-group input:focus {
-      background: rgba(255,255,255,0.2);
-      box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.5);
-    }
-
-    .input-group input::placeholder {
-      color: rgba(255,255,255,0.6);
-    }
-
-    .signup-btn {
-      width: 100%;
-      padding: 15px;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: white;
-      border: none;
-      border-radius: 10px;
+    .role {
       font-size: 18px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
+      margin-bottom: 15px;
+    }
+    .contact {
+      font-size: 15px;
+      line-height: 1.8;
+    }
+    .contact i {
+      margin-right: 10px;
+      color: #870000;
+    }
+    .signature-img {
+      position: absolute;
+      right: 20px;
+      bottom: 20px;
+      transform: rotate(-20deg);
+      width: 120px;
+      height: auto;
+    }
+    .socials {
       margin-top: 10px;
     }
-
-    .signup-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 15px 30px rgba(118, 75, 162, 0.5);
+    .socials p {
+      line-height: 1.8;
     }
-
-    .login-link {
-      text-align: center;
-      margin-top: 20px;
-      color: rgba(255,255,255,0.7);
-    }
-
-    .login-link a {
-      color: #667eea;
-      text-decoration: none;
-    }
-
-    /* Footer */
-    footer {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      background: rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(10px);
-      padding: 15px 0;
-      text-align: center;
-      font-size: 14px;
-      z-index: 10;
+    .socials i {
+      margin-right: 10px;
+      color: #870000;
     }
   </style>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
 </head>
 <body>
-  <!-- Particle Background -->
-  <div id="particles-js"></div>
-
-  <div class="signup-container">
-    <div class="signup-header">
-      <i class="fas fa-user-plus"></i>
-      <h2>Account Request</h2>
-      <p>Submit your details for account creation</p>
+  <div class="card">
+    <div class="profile-img">
+      <img src="https://via.placeholder.com/300x400" alt="Profile Image" />
     </div>
-
-    <form class="signup-form" id="signupForm">
-      <div class="input-group">
-        <label for="fullname">Full Name</label>
-        <input type="text" id="fullname" placeholder="Enter Your Full Name" required>
+    <div class="info">
+      <div class="logo">
+        <div class="logo-placeholder"></div>
+        <div>
+          <div class="title">ProBoy</div>
+          <div class="tagline">The Tech Enthusiast</div>
+        </div>
       </div>
-
-      <div class="input-group">
-        <label for="email">Email Address</label>
-        <input type="email" id="email" placeholder="e.g example@gmail.com" required>
+      <div class="name">Shahan Ali</div>
+      <div class="role">Tech Expert</div>
+      <div class="contact">
+        <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/92326684315">92326684315</a></p>
+        <p><i class="fas fa-envelope"></i> <a href="mailto:luciferkiller315@gmail.com">luciferkiller315@gmail.com</a></p>
+        <p><i class="fas fa-map-marker-alt"></i> Pakistan, Punjab, Vehari, Burewala</p>
+        <p><i class="fas fa-link"></i> <a href="https://proboy.vercel.app">PROBOY.VERCEL.APP</a></p>
       </div>
-
-      <div class="input-group">
-        <label for="phone">Phone Number</label>
-        <input type="tel" id="phone" placeholder="eg. 923123456789" required>
+      <div class="socials">
+        <p>
+          <i class="fab fa-tiktok"></i>
+          <a href="https://www.tiktok.com/@itx_proboy">itx_ProBoy</a><br />
+          <i class="fab fa-instagram"></i>
+          <a href="https://www.instagram.com/itx__proboy">itx__ProBoy</a>
+        </p>
       </div>
-
-      <div class="input-group">
-        <label for="username">Username</label>
-        <input type="text" id="username" placeholder="Enter Your UserName" required>
-      </div>
-
-      <div class="input-group">
-        <label for="password">Password</label>
-        <input type="password" id="password" placeholder="Enter Password" required>
-      </div>
-
-      <button type="submit" class="signup-btn">
-        <i class="fas fa-paper-plane"></i> Submit Request
-      </button>
-    </form>
+      <img class="signature-img" src="https://via.placeholder.com/150x50" alt="Signature" />
+    </div>
   </div>
-
-  <footer>
-    <p>мα∂є ву <b>ProBoy</b> &copy; <span id="currentYear"></span></p>
-  </footer>
-
-  <!-- Particles.js for background -->
-  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-  
-  <script>
-    // Initialize particle background
-    particlesJS("particles-js", {
-      "particles": {
-        "number": {
-          "value": 60,
-          "density": {
-            "enable": true,
-            "value_area": 800
-          }
-        },
-        "color": {
-          "value": ["#667eea", "#764ba2", "#6B46C1"]
-        },
-        "shape": {
-          "type": "circle"
-        },
-        "opacity": {
-          "value": 0.5,
-          "random": true
-        },
-        "size": {
-          "value": 3,
-          "random": true
-        },
-        "line_linked": {
-          "enable": true,
-          "distance": 150,
-          "color": "#667eea",
-          "opacity": 0.3,
-          "width": 1
-        },
-        "move": {
-          "enable": true,
-          "speed": 1.5,
-          "direction": "none",
-          "random": true,
-          "out_mode": "out"
-        }
-      },
-      "interactivity": {
-        "detect_on": "canvas",
-        "events": {
-          "onhover": {
-            "enable": true,
-            "mode": "grab"
-          },
-          "onclick": {
-            "enable": true,
-            "mode": "push"
-          }
-        }
-      },
-      "retina_detect": true
-    });
-
-    // Set current year
-    document.getElementById('currentYear').textContent = new Date().getFullYear();
-
-    // Form submission
-    document.getElementById('signupForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      // Get form values
-      const formData = {
-        fullname: document.getElementById('fullname').value,
-        email: document.getElementById('email').value,
-        phone: document.getElementById('phone').value,
-        username: document.getElementById('username').value,
-        password: document.getElementById('password').value
-      };
-      
-      // Create email body
-      const emailBody = `New Account Request:\n\n` +
-                       `Full Name: ${formData.fullname}\n` +
-                       `Email: ${formData.email}\n` +
-                       `Phone: ${formData.phone}\n` +
-                       `Username: ${formData.username}\n` +
-                       `Password: ${formData.password}\n\n` +
-                       `Please create this account manually.`;
-      
-      // Encode for URL
-      const encodedBody = encodeURIComponent(emailBody);
-      
-      // Redirect to Gmail with pre-filled email
-      window.location.href = `mailto:luciferkiller315@gmail.com?subject=Account%20Request&body=${encodedBody}`;
-      
-      // Optional: Show confirmation
-      alert("Redirecting to email... Please send the pre-filled message to complete your request.");
-    });
-  </script>
 </body>
 </html>
