@@ -234,6 +234,28 @@
       opacity: 1;
     }
 
+    /* Know More Button */
+    .know-more-btn {
+      display: inline-block;
+      margin-top: 25px;
+      padding: 10px 25px;
+      background: transparent;
+      border: 2px solid #667eea;
+      border-radius: 50px;
+      color: #667eea;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
+    .know-more-btn:hover {
+      background: #667eea;
+      color: white;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    }
+
     /* Footer */
     footer {
       position: fixed;
@@ -251,6 +273,7 @@
       justify-content: center;
       gap: 1.5rem;
       margin-bottom: 0.8rem;
+      flex-wrap: wrap;
     }
 
     .footer-link {
@@ -262,6 +285,7 @@
 
     .footer-link:hover {
       color: #9f7aea;
+      text-decoration: underline;
     }
 
     .copyright {
@@ -311,6 +335,10 @@
       .contact {
         font-size: 14px;
       }
+
+      .footer-content {
+        gap: 1rem;
+      }
     }
   </style>
 </head>
@@ -357,6 +385,9 @@
           <a href="https://www.instagram.com/itx__proboy"><i class="fab fa-instagram"></i> @itx__proboy</a>
         </div>
         
+        <!-- Know More Button -->
+        <a href="about.html" class="know-more-btn">Know More About Me</a>
+        
         <img class="signature-img" src="https://i.pinimg.com/736x/7d/49/85/7d49857abb297f0b5bcb1e22e2c077f2.jpg" alt="Signature">
       </div>
     </div>
@@ -364,10 +395,10 @@
 
   <footer>
     <div class="footer-content">
-      <a href="#" class="footer-link">About</a>
-      <a href="#" class="footer-link">Services</a>
-      <a href="#" class="footer-link">Projects</a>
-      <a href="#" class="footer-link">Contact</a>
+      <a href="about.html" class="footer-link">About</a>
+      <a href="photogallery.html" class="footer-link">Photo Gallery</a>
+      <a href="projects.html" class="footer-link">Projects</a>
+      <a href="contact.html" class="footer-link">Contact Us</a>
     </div>
     <div class="copyright">
       мα∂є ву <b>ProBoy</b> &copy; <span id="currentYear"></span> | All rights reserved
