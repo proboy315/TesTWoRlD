@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Photo Gallery with Details</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .photo-card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform 0.3s;
+    }
+
+    .photo-card:hover {
+      transform: scale(1.03);
+    }
+
+    .photo-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .photo-details {
+      padding: 15px;
+    }
+
+    .photo-details h3 {
+      margin: 0 0 10px;
+      color: #222;
+    }
+
+    .photo-details p {
+      margin: 0;
+      color: #666;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>My Photo Gallery</h1>
+
+  <div class="gallery">
+    <div class="photo-card">
+      <img src="https://via.placeholder.com/300x200" alt="Photo 1">
+      <div class="photo-details">
+        <h3>Sunset View</h3>
+        <p>Captured this beautiful sunset at the beach last summer.</p>
+      </div>
+    </div>
+
+    <div class="photo-card">
+      <img src="https://via.placeholder.com/300x200" alt="Photo 2">
+      <div class="photo-details">
+        <h3>Mountain Hike</h3>
+        <p>Amazing day hiking in the northern mountains of Pakistan.</p>
+      </div>
+    </div>
+
+    <div class="photo-card">
+      <img src="https://via.placeholder.com/300x200" alt="Photo 3">
+      <div class="photo-details">
+        <h3>City Lights</h3>
+        <p>The city never sleeps — a view from the rooftop.</p>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
