@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ProBoy | Surprise</title>
+    <link rel="icon" type="image/png" href="assets/icon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Rajdhani:wght@300;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Rajdhani', 'Orbitron', sans-serif;
+        }
+
+        body {
+            background: #0a0a10;
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Cyber Grid Background */
+        .cyber-grid {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            background: 
+                linear-gradient(rgba(10, 10, 16, 0.9), rgba(10, 10, 16, 0.9)),
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><path d="M0 0h40v40H0z" fill="none"/><path d="M0 0h40v40H0z" fill="none"/><path d="M20 0v40M0 20h40" stroke="%231a1a2e" stroke-width="0.5"/></svg>');
+        }
+
+        /* Scanlines overlay */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 4px 4px;
+            pointer-events: none;
+            z-index: 2;
+            mix-blend-mode: overlay;
+        }
+
+        /* Main Container - Perfectly Centered */
+        .surprise-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            background: rgba(20, 20, 30, 0.7);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
+            animation: fadeIn 0.8s ease;
+            overflow: hidden;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate(-50%, calc(-50% + 20px)); }
+            to { opacity: 1; transform: translate(-50%, -50%); }
+        }
+
+        .surprise-container::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #00ffff, #ff00ff, #00ffff);
+            z-index: -1;
+            border-radius: 1.6rem;
+            opacity: 0;
+            transition: 0.5s;
+        }
+
+        .surprise-container:hover::before {
+            opacity: 0.7;
+            animation: animate 4s linear infinite;
+        }
+
+        @keyframes animate {
+            0% { filter: blur(5px) hue-rotate(0deg); }
+            100% { filter: blur(5px) hue-rotate(360deg); }
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #00ffff, #ff00ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ff00ff;
+            font-size: 1rem;
+            text-shadow: 0 0 5px rgba(255, 0, 255, 0.5);
+        }
+
+        input {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            background: rgba(20, 20, 30, 0.5);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 10px;
+            color: #e0e0e0;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #ff00ff;
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.3);
+        }
+
+        input::placeholder {
+            color: rgba(224, 224, 224, 0.6);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background: transparent;
+            border: 2px solid #00ffff;
+            border-radius: 50px;
+            color: #00ffff;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover {
+            background: rgba(0, 255, 255, 0.1);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 255, 255, 0.4);
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.8);
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.4), transparent);
+            transition: 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        /* Result Styles */
+        .result-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .result-content h2 {
+            color: #00ff7f;
+            text-shadow: 0 0 15px rgba(0, 255, 127, 0.5);
+            margin-bottom: 1rem;
+        }
+
+        .result-content p {
+            color: rgba(224, 224, 224, 0.8);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid transparent;
+            border-top-color: #00ffff;
+            border-bottom-color: #ff00ff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 1.5rem auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Footer */
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: rgba(10, 10, 16, 0.8);
+            backdrop-filter: blur(15px);
+            padding: 1rem 0;
+            text-align: center;
+            z-index: 10;
+            border-top: 1px solid rgba(0, 255, 255, 0.2);
+        }
+
+        footer a {
+            color: #00ffff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        footer a:hover {
+            color: #ff00ff;
+            text-shadow: 0 0 5px rgba(255, 0, 255, 0.5);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .surprise-container {
+                padding: 1.5rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            input {
+                padding: 12px 12px 12px 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cyber Grid Background -->
+    <div class="cyber-grid"></div>
+    <div class="scanlines"></div>
+
+    <div class="surprise-container">
+        <div id="form-content">
+            <h2><i class="fas fa-gift"></i> Proboy SURPRISE</h2>
+            <p style="color: rgba(224, 224, 224, 0.8); margin-bottom: 1.5rem;">Enter your name to reveal your personalized surprise</p>
+            
+            <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" id="user_name" placeholder="Enter your name" required>
+            </div>
+            
+            <button class="btn" id="submit-btn">
+                <i class="fas fa-paper-plane"></i> REVEAL SURPRISE
+            </button>
+        </div>
+
+        <div id="result-content" class="result-content">
+            <h2><i class="fas fa-surprise"></i> SURPRISE FOR: <span id="display-name"></span></h2>
+            <div class="loading-spinner"></div>
+            <p>Preparing something special...</p>
+        </div>
+    </div>
+
+    <footer>
+        мα∂є ву <a href="https://proboy.vercel.app" target="_blank"><b>ProBoy</b></a> &copy; <span id="currentYear"></span>
+    </footer>
+
+    <script>
+        // Set current year in footer
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // Form submission
+        document.getElementById('submit-btn').addEventListener('click', function() {
+            const userName = document.getElementById('user_name').value.trim();
+            
+            if (!userName) {
+                alert("Please enter your name first!");
+                return;
+            }
+            
+            // Show loading state
+            document.getElementById('form-content').style.display = 'none';
+            document.getElementById('result-content').style.display = 'block';
+            document.getElementById('display-name').textContent = userName;
+            
+            // Play surprise sound after a delay
+            setTimeout(function() {
+                const audio = new Audio('assets/ahah.mp3');
+                audio.volume = 1.0;
+                audio.play().catch(e => console.log("Auto-play prevented:", e));
+                
+                // Change content after sound plays
+                setTimeout(function() {
+                    document.querySelector('.loading-spinner').style.display = 'none';
+                    document.querySelector('#result-content p').textContent = "Hope you enjoyed your cyber surprise! 😉";
+                }, 2000);
+            }, 1500);
+        });
+
+        // Create cyber circles decoration
+        function createCyberCircles() {
+            const colors = ['rgba(0, 255, 255, 0.1)', 'rgba(255, 0, 255, 0.1)', 'rgba(0, 255, 0, 0.1)'];
+            
+            for (let i = 0; i < 5; i++) {
+                const circle = document.createElement('div');
+                circle.className = 'cyber-circle';
+                
+                const size = Math.random() * 200 + 100;
+                const posX = Math.random() * window.innerWidth;
+                const posY = Math.random() * window.innerHeight;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                
+                circle.style.width = `${size}px`;
+                circle.style.height = `${size}px`;
+                circle.style.left = `${posX}px`;
+                circle.style.top = `${posY}px`;
+                circle.style.borderColor = color;
+                circle.style.boxShadow = `0 0 20px ${color}`;
+                
+                document.body.appendChild(circle);
+                
+                // Animate circles
+                setInterval(() => {
+                    const moveX = (Math.random() - 0.5) * 20;
+                    const moveY = (Math.random() - 0.5) * 20;
+                    circle.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                }, 2000 + Math.random() * 3000);
+            }
+        }
+
+        // Call the function to create circles
+        createCyberCircles();
+    </script>
+</body>
+</html>

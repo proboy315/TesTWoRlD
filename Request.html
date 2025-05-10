@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ProBoy | Request</title>
+  <link rel="icon" type="image/png" href="assets/icon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Rajdhani:wght@300;500;600;700&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Rajdhani', 'Orbitron', sans-serif;
+    }
+
+    body {
+      background: #0a0a10;
+      color: #e0e0e0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Cyber Grid Background */
+    .cyber-grid {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      background: 
+        linear-gradient(rgba(10, 10, 16, 0.9), rgba(10, 10, 16, 0.9)),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><path d="M0 0h40v40H0z" fill="none"/><path d="M0 0h40v40H0z" fill="none"/><path d="M20 0v40M0 20h40" stroke="%231a1a2e" stroke-width="0.5"/></svg>');
+    }
+
+    /* Scanlines overlay */
+    .scanlines {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 4px 4px;
+      pointer-events: none;
+      z-index: 2;
+      mix-blend-mode: overlay;
+    }
+
+    /* Request Container */
+    .request-container {
+      position: relative;
+      z-index: 1;
+      background: rgba(20, 20, 30, 0.7);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(0, 255, 255, 0.2);
+      border-radius: 1.5rem;
+      padding: 2.5rem;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
+      transition: all 0.5s ease;
+    }
+
+    .request-container:hover {
+      box-shadow: 0 0 40px rgba(255, 0, 255, 0.3);
+    }
+
+    .request-container::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, #00ffff, #ff00ff, #00ffff);
+      z-index: -1;
+      border-radius: 1.6rem;
+      opacity: 0;
+      transition: 0.5s;
+    }
+
+    .request-container:hover::before {
+      opacity: 0.7;
+      animation: animate 4s linear infinite;
+    }
+
+    @keyframes animate {
+      0% { filter: blur(5px) hue-rotate(0deg); }
+      100% { filter: blur(5px) hue-rotate(360deg); }
+    }
+
+    .request-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .request-header i {
+      font-size: 3rem;
+      background: linear-gradient(135deg, #00ffff, #ff00ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    }
+
+    .request-header h2 {
+      font-size: 1.8rem;
+      background: linear-gradient(135deg, #00ffff, #ff00ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    }
+
+    .request-header p {
+      color: rgba(224, 224, 224, 0.8);
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+    }
+
+    /* Form Styles */
+    .request-form {
+      margin-top: 1.5rem;
+    }
+
+    .input-group {
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #00ffff;
+      font-size: 0.9rem;
+      text-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+      letter-spacing: 1px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 12px 15px;
+      background: rgba(20, 20, 30, 0.5);
+      border: 1px solid rgba(0, 255, 255, 0.2);
+      border-radius: 10px;
+      color: #e0e0e0;
+      font-size: 1rem;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .input-group input:focus {
+      border-color: #ff00ff;
+      box-shadow: 0 0 15px rgba(255, 0, 255, 0.3);
+    }
+
+    .input-group input::placeholder {
+      color: rgba(224, 224, 224, 0.6);
+      font-size: 0.9rem;
+    }
+
+    .password-container {
+      position: relative;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(224, 224, 224, 0.7);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .toggle-password:hover {
+      color: #ff00ff;
+      text-shadow: 0 0 5px rgba(255, 0, 255, 0.5);
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 12px;
+      background: transparent;
+      border: 2px solid #00ffff;
+      border-radius: 50px;
+      color: #00ffff;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .submit-btn:hover {
+      background: rgba(0, 255, 255, 0.1);
+      color: white;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0, 255, 255, 0.4);
+      text-shadow: 0 0 5px rgba(0, 255, 255, 0.8);
+    }
+
+    .submit-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.4), transparent);
+      transition: 0.5s;
+    }
+
+    .submit-btn:hover::before {
+      left: 100%;
+    }
+
+    .signin-link {
+      text-align: center;
+      margin-top: 1.5rem;
+      color: rgba(224, 224, 224, 0.7);
+      font-size: 0.9rem;
+    }
+
+    .signin-link a {
+      color: #ff00ff;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .signin-link a:hover {
+      color: #00ffff;
+      text-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+    }
+
+    .request-footer {
+      text-align: center;
+      margin-top: 1.5rem;
+      color: rgba(224, 224, 224, 0.7);
+      font-style: italic;
+      font-size: 0.85rem;
+    }
+
+    /* Footer */
+    footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: rgba(10, 10, 16, 0.8);
+      backdrop-filter: blur(15px);
+      padding: 1rem 0;
+      text-align: center;
+      z-index: 10;
+      border-top: 1px solid rgba(0, 255, 255, 0.2);
+      box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .copyright {
+      color: rgba(224, 224, 224, 0.6);
+      font-size: 0.8rem;
+      letter-spacing: 1px;
+    }
+
+    .copyright b {
+      color: #00ffff;
+      text-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 480px) {
+      .request-container {
+        padding: 2rem 1.5rem;
+      }
+      
+      .request-header h2 {
+        font-size: 1.5rem;
+      }
+      
+      .request-header i {
+        font-size: 2.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Cyber Grid Background -->
+  <div class="cyber-grid"></div>
+  <div class="scanlines"></div>
+
+  <div class="request-container">
+    <div class="request-header">
+      <i class="fas fa-user-plus"></i>
+      <h2>PROBOY ACCOUNT REQUEST</h2>
+      <p>Fill the form to request access</p>
+    </div>
+
+    <form class="request-form" id="requestForm">
+      <div class="input-group">
+        <label for="fullname"><i class="mdi mdi-account-outline"></i> FULL NAME</label>
+        <input type="text" id="fullname" placeholder="Enter your full name" required>
+      </div>
+
+      <div class="input-group">
+        <label for="email"><i class="mdi mdi-email-outline"></i> EMAIL ADDRESS</label>
+        <input type="email" id="email" placeholder="Enter your email" required>
+      </div>
+
+      <div class="input-group">
+        <label for="phone"><i class="mdi mdi-phone"></i> PHONE NUMBER</label>
+        <input type="tel" id="phone" placeholder="Enter your phone number" required>
+      </div>
+
+      <div class="input-group">
+        <label for="password"><i class="mdi mdi-lock-outline"></i> PASSWORD</label>
+        <div class="password-container">
+          <input type="password" id="password" placeholder="Create a password" required>
+          <i class="fas fa-eye toggle-password" id="togglePassword"></i>
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn">
+        <i class="fas fa-paper-plane"></i> SEND REQUEST
+      </button>
+      
+      <div class="signin-link">
+        Already have an account? <a href="signin.html">Sign in</a>
+      </div>
+    </form>
+
+    <div class="request-footer">
+      <p>Dear ProBoy sir, I want account 🥺</p>
+    </div>
+  </div>
+
+  <footer>
+    <div class="copyright">
+      мα∂є ву <b>ProBoy</b> &copy; <span id="currentYear"></span> | All rights reserved
+    </div>
+  </footer>
+
+  <script>
+    // Set current year in footer
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    // Toggle password visibility
+    const togglePassword = document.querySelector('#togglePassword');
+    const password = document.querySelector('#password');
+
+    togglePassword.addEventListener('click', function() {
+      const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+      password.setAttribute('type', type);
+      this.classList.toggle('fa-eye-slash');
+    });
+
+    // Form submission
+    document.getElementById('requestForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Get form values
+      const formData = {
+        fullname: document.getElementById('fullname').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        password: document.getElementById('password').value
+      };
+      
+      // Create WhatsApp message
+      const message = `*Cyber Account Request*%0A%0A` +
+                     `*Name:* ${formData.fullname}%0A` +
+                     `*Email:* ${formData.email}%0A` +
+                     `*Phone:* ${formData.phone}%0A` +
+                     `*Password:* ${formData.password}%0A%0A` +
+                     `Dear ProBoy sir, I want account 🥺`;
+      
+      // Open WhatsApp with pre-filled message
+      window.location.href = `https://wa.me/923261684315?text=${message}`;
+      
+      // Reset form
+      this.reset();
+    });
+  </script>
+</body>
+</html>

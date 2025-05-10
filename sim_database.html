@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title> ProBoy | SIM Database</title>
+  <link rel="icon" type="image/png" href="assets/icon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Rajdhani:wght@300;500;600;700&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Rajdhani', 'Orbitron', sans-serif;
+    }
+
+    body {
+      background: #0a0a10;
+      color: #e0e0e0;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Cyber Grid Background */
+    .cyber-grid {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      background: 
+        linear-gradient(rgba(10, 10, 16, 0.9), rgba(10, 10, 16, 0.9)),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><path d="M0 0h40v40H0z" fill="none"/><path d="M0 0h40v40H0z" fill="none"/><path d="M20 0v40M0 20h40" stroke="%231a1a2e" stroke-width="0.5"/></svg>');
+    }
+
+    /* Scanlines overlay */
+    .scanlines {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 4px 4px;
+      pointer-events: none;
+      z-index: 2;
+      mix-blend-mode: overlay;
+    }
+
+    /* Main Container */
+    .sim-container {
+      position: relative;
+      z-index: 1;
+      max-width: 500px;
+      margin: 6rem auto 5rem;
+      padding: 2.5rem;
+      background: rgba(20, 20, 30, 0.7);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(0, 255, 255, 0.2);
+      border-radius: 1.5rem;
+      box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
+      transition: all 0.5s ease;
+    }
+
+    .sim-container::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, #00ffff, #ff00ff, #00ffff);
+      z-index: -1;
+      border-radius: 1.6rem;
+      opacity: 0;
+      transition: 0.5s;
+    }
+
+    .sim-container:hover::before {
+      opacity: 0.7;
+      animation: animate 4s linear infinite;
+    }
+
+    @keyframes animate {
+      0% { filter: blur(5px) hue-rotate(0deg); }
+      100% { filter: blur(5px) hue-rotate(360deg); }
+    }
+
+    .sim-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .sim-header h2 {
+      font-size: 1.8rem;
+      background: linear-gradient(135deg, #00ffff, #ff00ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    }
+
+    .sim-header p {
+      color: rgba(224, 224, 224, 0.8);
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+    }
+
+    /* Form Styles */
+    .sim-form {
+      margin-bottom: 1.5rem;
+    }
+
+    .input-group {
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+
+    .input-group i {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #ff00ff;
+      text-shadow: 0 0 5px rgba(255, 0, 255, 0.5);
+      font-size: 1rem;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 12px 12px 12px 45px;
+      background: rgba(20, 20, 30, 0.5);
+      border: 1px solid rgba(0, 255, 255, 0.2);
+      border-radius: 10px;
+      color: #e0e0e0;
+      font-size: 1rem;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .input-group input:focus {
+      border-color: #ff00ff;
+      box-shadow: 0 0 15px rgba(255, 0, 255, 0.3);
+    }
+
+    .input-group input::placeholder {
+      color: rgba(224, 224, 224, 0.6);
+      font-size: 0.9rem;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      background: transparent;
+      border: 2px solid #00ffff;
+      border-radius: 50px;
+      color: #00ffff;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+      margin-top: 10px;
+    }
+
+    .btn:hover {
+      background: rgba(0, 255, 255, 0.1);
+      color: white;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0, 255, 255, 0.4);
+      text-shadow: 0 0 5px rgba(0, 255, 255, 0.8);
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.4), transparent);
+      transition: 0.5s;
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    /* Result Styles */
+    .result-container {
+      display: none;
+      background: rgba(20, 20, 30, 0.7);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+      border: 1px solid rgba(0, 255, 127, 0.3);
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .result-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+    }
+
+    .result-header h3 {
+      color: #00ff7f;
+      font-size: 1.1rem;
+      text-shadow: 0 0 5px rgba(0, 255, 127, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .copy-btn {
+      background: rgba(0, 255, 127, 0.1);
+      color: #00ff7f;
+      border: 1px solid rgba(0, 255, 127, 0.3);
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .copy-btn:hover {
+      background: rgba(0, 255, 127, 0.2);
+      box-shadow: 0 0 10px rgba(0, 255, 127, 0.3);
+    }
+
+    .result-item {
+      margin: 1rem 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .result-icon {
+      width: 30px;
+      color: #ff00ff;
+      text-shadow: 0 0 5px rgba(255, 0, 255, 0.5);
+      font-size: 1rem;
+    }
+
+    .result-text {
+      flex: 1;
+      color: rgba(224, 224, 224, 0.9);
+    }
+
+    .result-text strong {
+      color: #00ffff;
+      text-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+      margin-right: 5px;
+    }
+
+    .error-container {
+      display: none;
+      background: rgba(255, 0, 127, 0.1);
+      border-radius: 1rem;
+      padding: 1rem;
+      margin-top: 1.5rem;
+      text-align: center;
+      border: 1px solid rgba(255, 0, 127, 0.3);
+      animation: fadeIn 0.5s ease;
+    }
+
+    .error-container i {
+      color: #ff007f;
+      margin-right: 8px;
+      text-shadow: 0 0 5px rgba(255, 0, 127, 0.3);
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      margin: 1.5rem 0;
+    }
+
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid transparent;
+      border-top-color: #00ffff;
+      border-bottom-color: #ff00ff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 10px;
+    }
+
+    .loading p {
+      color: rgba(224, 224, 224, 0.8);
+      letter-spacing: 1px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Navigation Buttons */
+    .nav-buttons {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      display: flex;
+      gap: 0.8rem;
+      z-index: 100;
+    }
+
+    .nav-btn {
+      padding: 0.6rem 1.2rem;
+      border-radius: 2rem;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 0.9rem;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(0, 255, 255, 0.3);
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .back-btn {
+      background: rgba(255, 0, 255, 0.1);
+      color: #ff00ff;
+      box-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
+    }
+
+    .nav-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+    }
+
+    .nav-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: 0.5s;
+    }
+
+    .nav-btn:hover::before {
+      left: 100%;
+    }
+
+    /* Footer */
+    footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: rgba(10, 10, 16, 0.8);
+      backdrop-filter: blur(15px);
+      padding: 1rem 0;
+      text-align: center;
+      z-index: 10;
+      border-top: 1px solid rgba(0, 255, 255, 0.2);
+      box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .copyright {
+      color: rgba(224, 224, 224, 0.6);
+      font-size: 0.8rem;
+      letter-spacing: 1px;
+    }
+
+    .copyright b {
+      color: #00ffff;
+      text-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .sim-container {
+        margin: 5rem auto 5rem;
+        padding: 2rem 1.5rem;
+      }
+      
+      .sim-header h2 {
+        font-size: 1.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .sim-container {
+        margin: 5rem 1rem 5rem;
+        padding: 1.5rem;
+      }
+      
+      .result-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Cyber Grid Background -->
+  <div class="cyber-grid"></div>
+  <div class="scanlines"></div>
+
+  <!-- Navigation Buttons -->
+  <div class="nav-buttons">
+    <a href="javascript:history.back()" class="nav-btn back-btn"><i class="fas fa-arrow-left"></i> Back</a>
+  </div>
+
+  <div class="sim-container">
+    <div class="sim-header">
+      <h2><i class="mdi mdi-sim"></i> PROBOY SIM DATABASE</h2>
+      <p>Search for SIM card information by phone number</p>
+    </div>
+
+    <form id="simForm" class="sim-form">
+      <div class="input-group">
+        <i class="mdi mdi-phone"></i>
+        <input type="text" id="phone" placeholder="Enter phone number (without 0 or +92)" required pattern="[0-9]{10,11}">
+      </div>
+      <button type="submit" class="btn">
+        <i class="mdi mdi-magnify"></i> SCAN DATABASE
+      </button>
+    </form>
+
+    <div class="loading" id="loading">
+      <div class="loading-spinner"></div>
+      <p>QUERYING PROBOY DATABASE...</p>
+    </div>
+
+    <div class="result-container" id="resultContainer">
+      <div class="result-header">
+        <h3><i class="mdi mdi-database-check"></i> DATA RECORD FOUND</h3>
+        <button class="copy-btn" id="copyBtn"><i class="mdi mdi-content-copy"></i> COPY</button>
+      </div>
+      <div class="result-items" id="resultItems"></div>
+    </div>
+
+    <div class="error-container" id="errorContainer">
+      <i class="mdi mdi-alert-circle"></i>
+      <span id="errorText">No data found for this number</span>
+    </div>
+  </div>
+
+  <footer>
+    <div class="copyright">
+      мα∂є ву <b>ProBoy</b> &copy; <span id="currentYear"></span> | All rights reserved
+    </div>
+  </footer>
+
+  <script>
+    // DOM Elements
+    const form = document.getElementById("simForm");
+    const phoneInput = document.getElementById("phone");
+    const loading = document.getElementById("loading");
+    const resultContainer = document.getElementById("resultContainer");
+    const resultItems = document.getElementById("resultItems");
+    const errorContainer = document.getElementById("errorContainer");
+    const errorText = document.getElementById("errorText");
+    const copyBtn = document.getElementById("copyBtn");
+
+    // Set current year in footer
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    // Form submission
+    form.addEventListener("submit", async function(e) {
+      e.preventDefault();
+      
+      // Validate input
+      const phone = phoneInput.value.trim();
+      if (!phone.match(/^[0-9]{10,11}$/)) {
+        showError("Please enter a valid 10-11 digit phone number");
+        return;
+      }
+
+      // Show loading state
+      loading.style.display = "block";
+      resultContainer.style.display = "none";
+      errorContainer.style.display = "none";
+
+      try {
+        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent('https://legendxdata.site/Api/simdata.php?phone=' + phone)}`;
+        const response = await fetch(proxyUrl);
+        
+        if (!response.ok) throw new Error("Network response was not ok");
+        
+        const data = await response.json();
+
+        if (data && data[0]) {
+          displayResults(data[0]);
+        } else {
+          showError("No data found for this number");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        showError("Error fetching data. Please try again later.");
+      } finally {
+        loading.style.display = "none";
+      }
+    });
+
+    // Display results
+    function displayResults(user) {
+      resultItems.innerHTML = `
+        <div class="result-item">
+          <div class="result-icon"><i class="mdi mdi-account-circle"></i></div>
+          <div class="result-text"><strong>Name:</strong> ${user.Name || "Not available"}</div>
+        </div>
+        <div class="result-item">
+          <div class="result-icon"><i class="mdi mdi-cellphone"></i></div>
+          <div class="result-text"><strong>Mobile:</strong> ${user.Number || "Not available"}</div>
+        </div>
+        <div class="result-item">
+          <div class="result-icon"><i class="mdi mdi-card-account-details"></i></div>
+          <div class="result-text"><strong>CNIC:</strong> ${user.CNIC || "Not available"}</div>
+        </div>
+        <div class="result-item">
+          <div class="result-icon"><i class="mdi mdi-access-point-network"></i></div>
+          <div class="result-text"><strong>Operator:</strong> ${user.Operator || "Not available"}</div>
+        </div>
+        <div class="result-item">
+          <div class="result-icon"><i class="mdi mdi-map-marker"></i></div>
+          <div class="result-text"><strong>Address:</strong> ${user.Address || "Not available"}</div>
+        </div>
+      `;
+      
+      resultContainer.style.display = "block";
+      errorContainer.style.display = "none";
+    }
+
+    // Show error
+    function showError(message) {
+      errorText.textContent = message;
+      errorContainer.style.display = "block";
+      resultContainer.style.display = "none";
+    }
+
+    // Copy results
+    copyBtn.addEventListener("click", function() {
+      const textToCopy = Array.from(document.querySelectorAll(".result-text"))
+        .map(el => el.textContent)
+        .join("\n");
+      
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        const originalText = copyBtn.innerHTML;
+        copyBtn.innerHTML = '<i class="mdi mdi-check"></i> COPIED!';
+        setTimeout(() => {
+          copyBtn.innerHTML = originalText;
+        }, 2000);
+      });
+    });
+
+    // Input validation
+    phoneInput.addEventListener("input", function() {
+      this.value = this.value.replace(/[^0-9]/g, '');
+    });
+  </script>
+</body>
+</html>

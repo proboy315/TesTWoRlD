@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title> ProBoy | Tools</title>
+  <link rel="icon" type="image/png" href="assets/icon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Rajdhani:wght@300;500;600;700&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Rajdhani', 'Orbitron', sans-serif;
+    }
+
+    body {
+      background: #0a0a10;
+      color: #e0e0e0;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Cyber Grid Background */
+    .cyber-grid {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      background: 
+        linear-gradient(rgba(10, 10, 16, 0.9), rgba(10, 10, 16, 0.9)),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><path d="M0 0h40v40H0z" fill="none"/><path d="M0 0h40v40H0z" fill="none"/><path d="M20 0v40M0 20h40" stroke="%231a1a2e" stroke-width="0.5"/></svg>');
+    }
+
+    /* Scanlines overlay */
+    .scanlines {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 4px 4px;
+      pointer-events: none;
+      z-index: 2;
+      mix-blend-mode: overlay;
+    }
+
+    /* Main Container */
+    .dashboard-container {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 6rem 1.5rem 5rem;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      background: linear-gradient(135deg, #00ffff, #ff00ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+      position: relative;
+    }
+
+    .header h1::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #00ffff, #ff00ff, transparent);
+      border-radius: 3px;
+    }
+
+    .header p {
+      color: rgba(224, 224, 224, 0.8);
+      font-size: 1.1rem;
+      letter-spacing: 1px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    /* Tool Cards Grid */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+      margin-top: 30px;
+    }
+
+    .tool-card {
+      background: rgba(20, 20, 30, 0.7);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(0, 255, 255, 0.2);
+      border-radius: 1.5rem;
+      padding: 2rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      text-decoration: none;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+    }
+
+    .tool-card::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, #00ffff, #ff00ff, #00ffff);
+      z-index: -1;
+      border-radius: 1.6rem;
+      opacity: 0;
+      transition: 0.5s;
+    }
+
+    .tool-card:hover::before {
+      opacity: 0.7;
+      animation: animate 4s linear infinite;
+    }
+
+    @keyframes animate {
+      0% { filter: blur(5px) hue-rotate(0deg); }
+      100% { filter: blur(5px) hue-rotate(360deg); }
+    }
+
+    /* Netflix Card Special Styling */
+    .netflix-card {
+      border: 1px solid rgba(229, 9, 20, 0.3);
+    }
+    
+    .netflix-card:hover {
+      border-color: rgba(229, 9, 20, 0.6);
+      box-shadow: 0 0 30px rgba(229, 9, 20, 0.3);
+    }
+
+    .tool-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 255, 255, 0.3);
+    }
+
+    .tool-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, #00ffff, #ff00ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    }
+
+    .tool-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: #00ffff;
+      text-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+    }
+
+    .tool-card p {
+      color: rgba(224, 224, 224, 0.8);
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    .tool-badge {
+      background: rgba(0, 255, 255, 0.1);
+      padding: 0.5rem 1.5rem;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      border: 1px solid rgba(0, 255, 255, 0.3);
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .tool-card:hover .tool-badge {
+      background: rgba(255, 0, 255, 0.2);
+      border-color: rgba(255, 0, 255, 0.5);
+    }
+
+    /* Navigation Buttons */
+    .nav-buttons {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      display: flex;
+      gap: 0.8rem;
+      z-index: 100;
+    }
+
+    .nav-btn {
+      padding: 0.6rem 1.2rem;
+      border-radius: 2rem;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 0.9rem;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(0, 255, 255, 0.3);
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .main-btn {
+      background: rgba(0, 255, 255, 0.1);
+      color: #00ffff;
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+    }
+
+    .nav-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+    }
+
+    .nav-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: 0.5s;
+    }
+
+    .nav-btn:hover::before {
+      left: 100%;
+    }
+
+    /* Footer */
+    footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: rgba(10, 10, 16, 0.8);
+      backdrop-filter: blur(15px);
+      padding: 1rem 0;
+      text-align: center;
+      z-index: 10;
+      border-top: 1px solid rgba(0, 255, 255, 0.2);
+      box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .copyright {
+      color: rgba(224, 224, 224, 0.6);
+      font-size: 0.8rem;
+      letter-spacing: 1px;
+    }
+
+    .copyright b {
+      color: #00ffff;
+      text-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .tool-card {
+      animation: fadeIn 0.5s ease forwards;
+      opacity: 0;
+    }
+
+    .tool-card:nth-child(1) { animation-delay: 0.2s; }
+    .tool-card:nth-child(2) { animation-delay: 0.4s; }
+    .tool-card:nth-child(3) { animation-delay: 0.6s; }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .dashboard-container {
+        padding: 5rem 1rem 5rem;
+      }
+      
+      .header h1 {
+        font-size: 2rem;
+      }
+      
+      .tools-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .header h1 {
+        font-size: 1.8rem;
+      }
+      
+      .header p {
+        font-size: 1rem;
+      }
+      
+      .tool-card {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Cyber Grid Background -->
+  <div class="cyber-grid"></div>
+  <div class="scanlines"></div>
+
+  <!-- Navigation Buttons -->
+  <div class="nav-buttons">
+    <a href="index.html" class="nav-btn main-btn"><i class="fas fa-home"></i> Main</a>
+  </div>
+
+  <div class="dashboard-container">
+    <header class="header">
+      <h1>Proboy TOOLS</h1>
+      <p>Premium cyber utilities for your digital needs</p>
+    </header>
+
+    <div class="tools-grid">
+      <a href="sim_database.html" class="tool-card">
+        <div class="tool-icon">
+          <i class="mdi mdi-sim"></i>
+        </div>
+        <h3>SIM Database</h3>
+        <p>Access comprehensive SIM card information and details through our ProBoy database</p>
+        <div class="tool-badge">ACCESS TOOL</div>
+      </a>
+
+      <a href="pranks_login.html" class="tool-card">
+        <div class="tool-icon">
+          <i class="mdi mdi-emoticon-devil-outline"></i>
+        </div>
+        <h3>ProBoy Pranks</h3>
+        <p>Collection of digital prank utilities for entertainment purposes</p>
+        <div class="tool-badge">ACCESS TOOL</div>
+      </a>
+    </div>
+  </div>
+
+  <footer>
+    <div class="copyright">
+      мα∂є ву <b>ProBoy</b> &copy; <span id="currentYear"></span> | All rights reserved
+    </div>
+  </footer>
+
+  <script>
+    // Set current year in footer
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    // Add glitch effect to header
+    const glitchHeader = document.querySelector('.header h1');
+    glitchHeader.classList.add('glitch');
+    glitchHeader.setAttribute('data-text', glitchHeader.textContent);
+  </script>
+</body>
+</html>

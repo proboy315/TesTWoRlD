@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ProBoy | Pranks Login</title>
+  <link rel="icon" type="image/png" href="assets/icon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Rajdhani:wght@300;500;600;700&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Rajdhani', 'Orbitron', sans-serif;
+    }
+
+    body {
+      background: #0a0a10;
+      color: #e0e0e0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Cyber Grid Background */
+    .cyber-grid {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      background: 
+        linear-gradient(rgba(10, 10, 16, 0.9), rgba(10, 10, 16, 0.9)),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><path d="M0 0h40v40H0z" fill="none"/><path d="M0 0h40v40H0z" fill="none"/><path d="M20 0v40M0 20h40" stroke="%231a1a2e" stroke-width="0.5"/></svg>');
+    }
+
+    /* Scanlines overlay */
+    .scanlines {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 4px 4px;
+      pointer-events: none;
+      z-index: 2;
+      mix-blend-mode: overlay;
+    }
+
+    /* Login Container */
+    .login-container {
+      position: relative;
+      z-index: 1;
+      background: rgba(20, 20, 30, 0.7);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(0, 255, 255, 0.2);
+      border-radius: 1.5rem;
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
+      transition: all 0.5s ease;
+    }
+
+    .login-container:hover {
+      box-shadow: 0 0 40px rgba(255, 0, 255, 0.3);
+    }
+
+    .login-container::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, #00ffff, #ff00ff, #00ffff);
+      z-index: -1;
+      border-radius: 1.6rem;
+      opacity: 0;
+      transition: 0.5s;
+    }
+
+    .login-container:hover::before {
+      opacity: 0.7;
+      animation: animate 4s linear infinite;
+    }
+
+    @keyframes animate {
+      0% { filter: blur(5px) hue-rotate(0deg); }
+      100% { filter: blur(5px) hue-rotate(360deg); }
+    }
+
+    .login-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .login-header h2 {
+      font-size: 2rem;
+      background: linear-gradient(135deg, #00ffff, #ff00ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    }
+
+    .login-header p {
+      color: rgba(224, 224, 224, 0.8);
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+    }
+
+    /* Form Styles */
+    .login-form {
+      margin-top: 1.5rem;
+    }
+
+    .input-group {
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+
+    .input-group i {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #ff00ff;
+      font-size: 1rem;
+      text-shadow: 0 0 5px rgba(255, 0, 255, 0.5);
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 12px 12px 12px 40px;
+      background: rgba(20, 20, 30, 0.5);
+      border: 1px solid rgba(0, 255, 255, 0.2);
+      border-radius: 10px;
+      color: #e0e0e0;
+      font-size: 1rem;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .input-group input::placeholder {
+      color: rgba(224, 224, 224, 0.6);
+    }
+
+    .input-group input:focus {
+      border-color: #ff00ff;
+      box-shadow: 0 0 15px rgba(255, 0, 255, 0.3);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      background: transparent;
+      border: 2px solid #00ffff;
+      border-radius: 50px;
+      color: #00ffff;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+      margin-top: 10px;
+    }
+
+    .btn:hover {
+      background: rgba(0, 255, 255, 0.1);
+      color: white;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0, 255, 255, 0.4);
+      text-shadow: 0 0 5px rgba(0, 255, 255, 0.8);
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.4), transparent);
+      transition: 0.5s;
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    .forgot-password {
+      display: block;
+      text-align: center;
+      margin-top: 1rem;
+      color: rgba(224, 224, 224, 0.7);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.3s ease;
+    }
+
+    .forgot-password:hover {
+      color: #00ffff;
+      text-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+    }
+
+    .signup-link {
+      text-align: center;
+      margin-top: 1.5rem;
+      color: rgba(224, 224, 224, 0.7);
+      font-size: 0.9rem;
+    }
+
+    .signup-link a {
+      color: #ff00ff;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .signup-link a:hover {
+      color: #00ffff;
+      text-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+    }
+
+    /* Status Message */
+    .status-message {
+      padding: 12px;
+      border-radius: 10px;
+      margin-top: 1rem;
+      text-align: center;
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .success {
+      background: rgba(0, 255, 127, 0.1);
+      border: 1px solid rgba(0, 255, 127, 0.3);
+      color: #00ff7f;
+      display: block;
+    }
+
+    .error {
+      background: rgba(255, 0, 127, 0.1);
+      border: 1px solid rgba(255, 0, 127, 0.3);
+      color: #ff007f;
+      display: block;
+    }
+
+    /* Loading Animation */
+    .loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 10, 16, 0.8);
+      backdrop-filter: blur(10px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 1000;
+    }
+
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 3px solid transparent;
+      border-top-color: #00ffff;
+      border-bottom-color: #ff00ff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 1rem;
+    }
+
+    .loading-text {
+      color: #e0e0e0;
+      font-size: 1rem;
+      letter-spacing: 1px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Navigation Buttons */
+    .nav-buttons {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      display: flex;
+      gap: 0.8rem;
+      z-index: 100;
+    }
+
+    .nav-btn {
+      padding: 0.6rem 1.2rem;
+      border-radius: 2rem;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 0.9rem;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(0, 255, 255, 0.3);
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .back-btn {
+      background: rgba(255, 0, 255, 0.1);
+      color: #ff00ff;
+      box-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
+    }
+
+    .nav-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+    }
+
+    .nav-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: 0.5s;
+    }
+
+    .nav-btn:hover::before {
+      left: 100%;
+    }
+
+    /* Cyber Decorations */
+    .cyber-circle {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(0, 255, 255, 0.3);
+      pointer-events: none;
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 480px) {
+      .login-container {
+        padding: 2rem 1.5rem;
+        margin: 0 1rem;
+      }
+      
+      .login-header h2 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Cyber Grid Background -->
+  <div class="cyber-grid"></div>
+  <div class="scanlines"></div>
+
+  <!-- Navigation Buttons -->
+  <div class="nav-buttons">
+    <a href="javascript:history.back()" class="nav-btn back-btn"><i class="fas fa-arrow-left"></i> Back</a>
+  </div>
+
+  <!-- Loading Animation -->
+  <div class="loading" id="loading">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">PROBOY AUTHENTICATION IN PROGRESS</div>
+  </div>
+
+  <div class="login-container">
+    <div class="login-header">
+      <h2>PRANKS LOGIN</h2>
+      <p>Access My prank collection</p>
+    </div>
+
+    <form class="login-form" id="loginForm">
+      <div class="input-group">
+        <i class="fas fa-user"></i>
+        <input type="text" id="username" placeholder="Username" required autocomplete="username">
+      </div>
+      
+      <div class="input-group">
+        <i class="fas fa-key"></i>
+        <input type="password" id="password" placeholder="Password" required autocomplete="current-password">
+      </div>
+      
+      <button type="submit" class="btn">
+        <i class="fas fa-sign-in-alt"></i> Authenticate
+      </button>
+      
+ 
+      
+      <div id="statusMessage" class="status-message"></div>
+    </form>
+
+    <div class="signup-link">
+      Request Access? <a href="Request_pranks_list.html">Click Here</a>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('loginForm');
+    const statusMessage = document.getElementById('statusMessage');
+    const loading = document.getElementById('loading');
+
+    // Cache credentials after first fetch
+    let cachedCredentials = null;
+    let lastFetchTime = 0;
+    const CACHE_DURATION = 300000; // 5 minutes cache
+
+    // Path to your auth.txt file in GitHub repo
+    const authFileURL = 'https://raw.githubusercontent.com/proboy315/Source/refs/heads/main/Proboy%20vercel%20app/main/pranks_auth.txt';
+
+    // Prefetch credentials when page loads
+    window.addEventListener('load', () => {
+      fetchCredentials().then(creds => {
+        cachedCredentials = creds;
+        lastFetchTime = Date.now();
+      });
+    });
+
+    async function fetchCredentials() {
+      try {
+        const response = await fetch(authFileURL + '?t=' + Date.now()); // Cache busting
+        if (!response.ok) throw new Error('Network error');
+        const authText = await response.text();
+        return authText.split('\n')
+          .map(line => line.trim())
+          .filter(line => line && !line.startsWith('#') && line.includes(':'));
+      } catch (error) {
+        console.error('Failed to fetch credentials:', error);
+        return [];
+      }
+    }
+
+    form.addEventListener('submit', async function(event) {
+      event.preventDefault();
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (!username || !password) {
+        showMessage('Please enter both username and password', 'error');
+        return;
+      }
+
+      loading.style.display = 'flex';
+      
+      try {
+        // Use cached credentials if recent, otherwise fetch fresh
+        const now = Date.now();
+        let credentials = cachedCredentials;
+        
+        if (!credentials || now - lastFetchTime > CACHE_DURATION) {
+          credentials = await fetchCredentials();
+          cachedCredentials = credentials;
+          lastFetchTime = now;
+        }
+
+        // Check credentials
+        const credentialToCheck = `${username}:${password}`;
+        const isValid = credentials.some(cred => cred === credentialToCheck);
+
+        if (isValid) {
+          showMessage('Authentication successful! Redirecting...', 'success');
+          setTimeout(() => {
+            window.location.href = 'list_of_pranks.html';
+          }, 1000);
+        } else {
+          throw new Error('Invalid credentials');
+        }
+      } catch (error) {
+        showMessage('Invalid username or password', 'error');
+      } finally {
+        loading.style.display = 'none';
+      }
+    });
+
+    function showMessage(message, type) {
+      statusMessage.textContent = message;
+      statusMessage.className = `status-message ${type}`;
+      
+      if (type === 'error') {
+        form.style.animation = 'shake 0.4s';
+        setTimeout(() => form.style.animation = '', 400);
+      }
+    }
+
+    // Add shake animation
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-8px); }
+        50% { transform: translateX(8px); }
+        75% { transform: translateX(-5px); }
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Create cyber circles decoration
+    function createCyberCircles() {
+      const colors = ['rgba(0, 255, 255, 0.1)', 'rgba(255, 0, 255, 0.1)', 'rgba(0, 255, 0, 0.1)'];
+      
+      for (let i = 0; i < 5; i++) {
+        const circle = document.createElement('div');
+        circle.className = 'cyber-circle';
+        
+        const size = Math.random() * 200 + 100;
+        const posX = Math.random() * window.innerWidth;
+        const posY = Math.random() * window.innerHeight;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        
+        circle.style.width = `${size}px`;
+        circle.style.height = `${size}px`;
+        circle.style.left = `${posX}px`;
+        circle.style.top = `${posY}px`;
+        circle.style.borderColor = color;
+        circle.style.boxShadow = `0 0 20px ${color}`;
+        
+        document.body.appendChild(circle);
+        
+        // Animate circles
+        setInterval(() => {
+          const moveX = (Math.random() - 0.5) * 20;
+          const moveY = (Math.random() - 0.5) * 20;
+          circle.style.transform = `translate(${moveX}px, ${moveY}px)`;
+        }, 2000 + Math.random() * 3000);
+      }
+    }
+
+    // Call the function to create circles
+    createCyberCircles();
+  </script>
+</body>
+</html>
