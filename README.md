@@ -1,2 +1,0 @@
-# TesTWoRlD
-Mission is Exploring
