@@ -2,46 +2,170 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login System</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Auth System</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 50px;
+      text-align: center;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+      background-color: #0070f3;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 20px;
+      width: 300px;
+      border-radius: 10px;
+      position: relative;
+    }
+
+    .close {
+      position: absolute;
+      top: 10px; right: 15px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .form input {
+      display: block;
+      width: 90%;
+      margin: 10px auto;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .form button {
+      width: 90%;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .toggle {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 15px;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>Welcome to My Vercel Page</h1>
-    <button onclick="openModal()">Login / Signup</button>
-  </header>
+
+  <h1>Welcome to My Vercel Page</h1>
+  <button onclick="openModal()">Login / Signup</button>
 
   <!-- Modal -->
   <div id="authModal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="closeModal()">&times;</span>
 
-      <!-- Toggle Buttons -->
       <div class="toggle">
-        <button id="showLogin" onclick="showLoginForm()">Sign In</button>
-        <button id="showSignup" onclick="showSignupForm()">Sign Up</button>
+        <button onclick="showLoginForm()">Sign In</button>
+        <button onclick="showSignupForm()">Sign Up</button>
       </div>
 
-      <!-- Login Form -->
       <form id="loginForm" class="form" onsubmit="loginUser(event)">
         <h2>Login</h2>
-        <input type="email" placeholder="Email" required />
-        <input type="password" placeholder="Password" required />
+        <input type="email" placeholder="Email" required id="loginEmail"/>
+        <input type="password" placeholder="Password" required id="loginPassword"/>
         <button type="submit">Login</button>
       </form>
 
-      <!-- Signup Form -->
       <form id="signupForm" class="form hidden" onsubmit="signupUser(event)">
         <h2>Sign Up</h2>
-        <input type="text" placeholder="Username" required />
-        <input type="email" placeholder="Email" required />
-        <input type="password" placeholder="Password" required />
+        <input type="email" placeholder="Email" required id="signupEmail"/>
+        <input type="password" placeholder="Password" required id="signupPassword"/>
         <button type="submit">Sign Up</button>
       </form>
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <script>
+    const supabase = supabase.createClient(
+      "https://plogftxvkwuzuctncubw.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsb2dmdHh2a3d1enVjdG5jdWJ3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAyNTM5MDgsImV4cCI6MjA2NTgyOTkwOH0.-6oGdbV4IBOgSPsipXRmTZW77iiBnZxcC9_kSB4Ox1g"
+    );
+
+    const modal = document.getElementById("authModal");
+    const loginForm = document.getElementById("loginForm");
+    const signupForm = document.getElementById("signupForm");
+
+    function openModal() {
+      modal.style.display = "flex";
+    }
+
+    function closeModal() {
+      modal.style.display = "none";
+    }
+
+    function showLoginForm() {
+      signupForm.classList.add("hidden");
+      loginForm.classList.remove("hidden");
+    }
+
+    function showSignupForm() {
+      loginForm.classList.add("hidden");
+      signupForm.classList.remove("hidden");
+    }
+
+    async function signupUser(e) {
+      e.preventDefault();
+      const email = document.getElementById("signupEmail").value;
+      const password = document.getElementById("signupPassword").value;
+
+      const { error } = await supabase.auth.signUp({ email, password });
+
+      if (error) {
+        alert("Signup error: " + error.message);
+      } else {
+        alert("Check your email to confirm registration.");
+        closeModal();
+      }
+    }
+
+    async function loginUser(e) {
+      e.preventDefault();
+      const email = document.getElementById("loginEmail").value;
+      const password = document.getElementById("loginPassword").value;
+
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+      if (error) {
+        alert("Login error: " + error.message);
+      } else {
+        alert("Login successful!");
+        closeModal();
+        window.location.href = "/dashboard.html"; // change as needed
+      }
+    }
+
+    window.onclick = function (e) {
+      if (e.target === modal) closeModal();
+    };
+  </script>
 </body>
 </html>
