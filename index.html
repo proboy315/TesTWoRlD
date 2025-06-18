@@ -1,255 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>ProBoy | Portfolio</title>
-  <link rel="icon" type="image/png" href="assets/icon.ico">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css">
-  <!-- Path Of Style.css assets/style.css -->
-  <link rel="stylesheet" href="assets/style.css">
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Rajdhani:wght@300;500;600;700&display=swap');
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login System</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Cyber Grid Background -->
-  <div class="cyber-grid"></div>
-  <div class="scanlines"></div>
-  
-  <!-- Cyber Decorations -->
-  <div class="cyber-circle circle-1"></div>
-  <div class="cyber-circle circle-2"></div>
+  <header>
+    <h1>Welcome to My Vercel Page</h1>
+    <button onclick="openModal()">Login / Signup</button>
+  </header>
 
-  <!-- Navigation Buttons -->
-  <div class="nav-buttons">
-    <a href="signin.html" class="nav-btn signin-btn"><i class="fas fa-terminal"></i> Sign In</a>
-  </div>
+  <!-- Modal -->
+  <div id="authModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
 
-  <div class="portfolio-container">
-    <!-- Cyber Profile Card -->
-    <div class="profile-card" id="profileCard">
-      <div class="profile-img">
-        <img src="assets/My_Photo.jpg" alt="Profile Image" id="profilePhoto">
-        <div class="cyber-ring"></div>
-        <div class="cyber-ring"></div>
-        <div class="cyber-ring"></div>
+      <!-- Toggle Buttons -->
+      <div class="toggle">
+        <button id="showLogin" onclick="showLoginForm()">Sign In</button>
+        <button id="showSignup" onclick="showSignupForm()">Sign Up</button>
       </div>
-      <div class="info">
-        <div class="logo-container">
-          <img src="assets/icon.ico" alt="Logo" class="logo-img">
-          <div>
-            <div class="title">ProBoy</div>
-            <div class="tagline">The Tech Enthusiast</div>
-          </div>
-        </div>
-        
-        <div class="name">Shahan Ali</div>
-        <div class="role">Tech Expert</div>
-        
-        <div class="contact">
-          <p><i class="mdi mdi-cellphone"></i> <a href="https://wa.me/923261684315">+92 326 1684315</a></p>
-          <p><i class="mdi mdi-email"></i> <a href="mailto:luciferkiller315@gmail.com">luciferkiller315@gmail.com</a></p>
-          <p><i class="mdi mdi-map-marker"></i> <a href="https://maps.app.goo.gl/gi6HndSEMv5SPf8t9">Burewala, Vehari, Punjab, Pakistan</a></p>
-          <p><i class="mdi mdi-web"></i> <a href="https://proboy.vercel.app">proboy.vercel.app</a></p>
-        </div>
-        
-        <div class="socials">
-          <a href="https://www.tiktok.com/@itx_proboy"><i class="mdi mdi-tiktok"></i> @itx_proboy</a>
-          <a href="https://www.instagram.com/itx__proboy"><i class="mdi mdi-instagram"></i> @itx__proboy</a>
-        </div>
-        
-        <!-- Know More Button -->
-        <a href="about.html" class="know-more-btn">Access Full Profile</a>
-        
-        <img class="signature-img" src="assets/sign.svg" alt="Signature">
-      </div>
+
+      <!-- Login Form -->
+      <form id="loginForm" class="form" onsubmit="loginUser(event)">
+        <h2>Login</h2>
+        <input type="email" placeholder="Email" required />
+        <input type="password" placeholder="Password" required />
+        <button type="submit">Login</button>
+      </form>
+
+      <!-- Signup Form -->
+      <form id="signupForm" class="form hidden" onsubmit="signupUser(event)">
+        <h2>Sign Up</h2>
+        <input type="text" placeholder="Username" required />
+        <input type="email" placeholder="Email" required />
+        <input type="password" placeholder="Password" required />
+        <button type="submit">Sign Up</button>
+      </form>
     </div>
   </div>
 
-  <footer>
-    <div class="footer-content">
-      <a href="about.html" class="footer-link">About</a>
-      <a href="photogallery.html" class="footer-link">Photo Gallery</a>
-    </div>
-    <div class="copyright">
-      мα∂є ву <b>ProBoy</b> &copy; <span id="currentYear"></span> | All rights reserved
-    </div>
-  </footer>
-
-  <script>
-    // Set current year in footer
-    document.getElementById('currentYear').textContent = new Date().getFullYear();
-
-    // Create cyber circles
-    function createCyberCircles() {
-      const colors = ['rgba(0, 255, 255, 0.1)', 'rgba(255, 0, 255, 0.1)', 'rgba(0, 255, 0, 0.1)'];
-      
-      for (let i = 0; i < 5; i++) {
-        const circle = document.createElement('div');
-        circle.className = 'cyber-circle';
-        
-        const size = Math.random() * 200 + 100;
-        const posX = Math.random() * window.innerWidth;
-        const posY = Math.random() * window.innerHeight;
-        const color = colors[Math.floor(Math.random() * colors.length)];
-        
-        circle.style.width = `${size}px`;
-        circle.style.height = `${size}px`;
-        circle.style.left = `${posX}px`;
-        circle.style.top = `${posY}px`;
-        circle.style.borderColor = color;
-        circle.style.boxShadow = `0 0 20px ${color}`;
-        
-        document.body.appendChild(circle);
-        
-        // Animate circles
-        setInterval(() => {
-          const moveX = (Math.random() - 0.5) * 20;
-          const moveY = (Math.random() - 0.5) * 20;
-          circle.style.transform = `translate(${moveX}px, ${moveY}px)`;
-        }, 2000 + Math.random() * 3000);
-      }
-    }
-
-    // Call the function to create circles
-    createCyberCircles();
-
-    // Add glitch effect to elements
-    const glitchElements = document.querySelectorAll('.logo, .title, .name');
-    glitchElements.forEach(el => {
-      el.classList.add('glitch');
-      el.setAttribute('data-text', el.textContent);
-    });
-
-    // Animation for profile card
-    const profileCard = document.getElementById('profileCard');
-    const profilePhoto = document.getElementById('profilePhoto');
-    const rings = document.querySelectorAll('.cyber-ring');
-    let animationActive = false;
-
-    // Make container more transparent on click
-    profileCard.addEventListener('click', function() {
-      if (!animationActive) {
-        animationActive = true;
-        
-        // Activate cyber rings
-        rings.forEach(ring => {
-          ring.style.opacity = '1';
-        });
-
-        // Create laser beams
-        createLaserBeams();
-
-        // Make container more transparent
-        profileCard.classList.add('active');
-
-        // Reset after animation
-        setTimeout(() => {
-          rings.forEach(ring => {
-            ring.style.opacity = '0';
-          });
-          profileCard.classList.remove('active');
-          animationActive = false;
-        }, 3000);
-      }
-    });
-
-    // Animation for all clickable elements
-    const clickableElements = document.querySelectorAll('a, button, .profile-img, .logo-img, .signature-img');
-    clickableElements.forEach(el => {
-      el.addEventListener('click', function(e) {
-        if (e.target === profilePhoto) return; // Skip for profile photo
-        
-        const x = e.clientX;
-        const y = e.clientY;
-        
-        createRippleEffect(x, y);
-        createLaserBeamsAtPosition(x, y);
-      });
-    });
-
-    function createLaserBeams() {
-      const container = document.querySelector('.profile-img');
-      const centerX = profilePhoto.offsetLeft + profilePhoto.offsetWidth / 2;
-      const centerY = profilePhoto.offsetTop + profilePhoto.offsetHeight / 2;
-      
-      for (let i = 0; i < 8; i++) {
-        const beam = document.createElement('div');
-        beam.className = 'laser-beam';
-        beam.style.left = `${centerX}px`;
-        beam.style.top = `${centerY}px`;
-        beam.style.transform = `rotate(${i * 45}deg)`;
-        
-        container.appendChild(beam);
-        
-        // Animate beam
-        setTimeout(() => {
-          beam.style.height = '300px';
-          beam.style.opacity = '0.7';
-          
-          setTimeout(() => {
-            beam.style.opacity = '0';
-            setTimeout(() => {
-              beam.remove();
-            }, 1000);
-          }, 800);
-        }, i * 100);
-      }
-    }
-
-    function createLaserBeamsAtPosition(x, y) {
-      for (let i = 0; i < 4; i++) {
-        const beam = document.createElement('div');
-        beam.className = 'laser-beam';
-        beam.style.left = `${x}px`;
-        beam.style.top = `${y}px`;
-        beam.style.transform = `rotate(${i * 90 + 45}deg)`;
-        beam.style.background = `linear-gradient(to bottom, transparent, ${i % 2 ? '#ff00ff' : '#00ffff'}, transparent)`;
-        beam.style.boxShadow = `0 0 10px ${i % 2 ? '#ff00ff' : '#00ffff'}`;
-        
-        document.body.appendChild(beam);
-        
-        // Animate beam
-        setTimeout(() => {
-          beam.style.height = '200px';
-          beam.style.opacity = '0.7';
-          
-          setTimeout(() => {
-            beam.style.opacity = '0';
-            setTimeout(() => {
-              beam.remove();
-            }, 1000);
-          }, 500);
-        }, i * 100);
-      }
-    }
-
-    function createRippleEffect(x, y) {
-      const ripple = document.createElement('div');
-      ripple.className = 'cyber-circle';
-      ripple.style.left = `${x}px`;
-      ripple.style.top = `${y}px`;
-      ripple.style.width = '0';
-      ripple.style.height = '0';
-      ripple.style.borderColor = `rgba(${Math.random() > 0.5 ? '0,255,255' : '255,0,255'}, 0.5)`;
-      ripple.style.boxShadow = `0 0 20px ${Math.random() > 0.5 ? '#00ffff' : '#ff00ff'}`;
-      ripple.style.transform = 'translate(-50%, -50%)';
-      
-      document.body.appendChild(ripple);
-      
-      // Animate ripple
-      setTimeout(() => {
-        ripple.style.width = '200px';
-        ripple.style.height = '200px';
-        ripple.style.opacity = '0';
-        
-        setTimeout(() => {
-          ripple.remove();
-        }, 1000);
-      }, 10);
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
